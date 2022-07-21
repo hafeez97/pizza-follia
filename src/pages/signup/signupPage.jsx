@@ -9,7 +9,6 @@ import SendCode from "./sendCode.jsx"
 const SignupPage = () => {
     const {
         control,
-        register,
         handleSubmit,
         formState: { errors },
     } = useForm();
@@ -18,6 +17,7 @@ const SignupPage = () => {
     const {isLoading, error, isError, mutateAsync, data} = useMutation(signupUser)
 
     const onSubmit =async (data) => {
+        console.log(data)
         await mutateAsync({name:data.name, email:data.email, phoneNumber:data.phoneNumber, code:data.code})
     }
 

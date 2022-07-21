@@ -15,25 +15,19 @@ const TextFieldComponent = (props) => {
                     <TextField
                         {...field}
                         label={props.label}
-                        onChange={props.onChange}
-                        // variant="outlined"
-                        variant={props.variant ? props.variant : "outlined"}
+                        variant="outlined"
                         size={"small"}
                         margin={"normal"}
                         fullWidth
                         type={props.type || "text"}
                         disabled={props.disabled}
-                        color={props.errors?.message ? "secondary" : "primary"}
-                        error={props.errors?.message !== undefined}
+                        color={props?.errors?.message ? "secondary" : "primary"}
+                        error={props?.errors?.message == undefined ? false : true}
                         helperText={
-                            props.errors?.message
-                                ? props.errors?.message
+                            props?.errors?.message
+                                ? props?.errors?.message
                                 : props.helperText
                         }
-                        // onBlur={(e) => {
-                        //     if (props.onChange !== undefined) props.onChange(e.target.value);
-                        //     field.onChange(e.target.value);
-                        // }}
                     />
                 )}
             />

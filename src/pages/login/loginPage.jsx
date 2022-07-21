@@ -2,23 +2,36 @@ import React, {useState} from "react"
 import {useMutation} from "@tanstack/react-query";
 import {loginUser} from "../../api/axiosReq.js";
 import TextFieldComponent from "../../components/inputs/TextFieldComponent.jsx";
-import { useForm, Controller } from "react-hook-form";
+import { useForm} from "react-hook-form";
 import Alert from "@mui/material/Alert";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import { actionTypes, useStateValue } from "../../store";
 
 const LoginPage = () => {
     const {
         control,
-        register,
         handleSubmit,
         formState: { errors },
     } = useForm();
-    const [userData, setUserData] = useState("");
-    const {isLoading, error, isError, mutateAsync, data} = useMutation(loginUser)
+
+    const [{ token }, dispatch] = useStateValue();
+    const [, setCookie] = useCookies(["jwt"]);
+    const Navigate = useNavigate();
+
+    const {isLoading, error, isError, mutateAsync, data} = useMutation(loginUser, {
+        onSuccess:(data)=>{
+            dispatch({ type: actionTypes.SET_TOKEN, value: data.token });
+            setCookie("jwt", data.token);
+            Navigate("/");
+        }
+    })
+
+
     const onSubmit =async (data) => {
         console.log(data)
         await mutateAsync({email:data.email, password: data.password})
     }
-
 
     return(
         <>

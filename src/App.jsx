@@ -11,6 +11,7 @@ import { useCookies } from "react-cookie";
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query'
 import LoginPage from "./pages/login/loginPage.jsx";
 import SignupPage from "./pages/signup/signupPage.jsx";
+import HomePageTest from "./pages/HomePageTest.jsx";
 const queryClient = new QueryClient();
 const App = () => {
 
@@ -34,6 +35,7 @@ const App = () => {
             <QueryClientProvider client={queryClient}>
                 <Router>
                     <Routes>
+                        <Route path="/" element={ <HomePageTest/>}/>
                         <Route path="/login" element={ <LoginPage/>}/>
                         <Route path="/signup" element={ <SignupPage/>}/>
                     </Routes>
