@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer } from "react";
 
 import { initialState } from "./reducer";
 
-export const StateContext = createContext([initialState, () => initialState]);
+export const StateContext = createContext([initialState, p => initialState]);
 
 export const StateProvider = ({ reducer, children, initialState }) => {
     const [state, dispatch] = useReducer(reducer, initialState);

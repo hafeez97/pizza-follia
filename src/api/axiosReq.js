@@ -14,9 +14,9 @@ export const loginUser = async ({email, password}) => {
     }
 }
 
-export const signupUser = async ({email, password, name, code, phoneNumber}) => {
+export const signupUser = async ({email, password, name, code, phoneNumber, image}) => {
     try {
-        const {data} = await api.post("api/registerUser", {name, email, password, phoneNumber, code})
+        const {data} = await api.post("api/registerUser", {name, email, password, phoneNumber, code, image})
         return data
     } catch(error){
         throw Error(error.response.data.message)

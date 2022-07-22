@@ -1,12 +1,14 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import {useMutation} from "@tanstack/react-query";
 import {signupUser, getCode} from "../../api/axiosReq.js";
 import TextFieldComponent from "../../components/inputs/TextFieldComponent.jsx";
 import { useForm, Controller } from "react-hook-form";
 import Alert from '@mui/material/Alert';
-import SendCode from "./sendCode.jsx"
+import SendCode from './sendCode.jsx';
+import {useNavigate} from "react-router-dom";
 
 const SignupPage = () => {
+    const Navigate = useNavigate();
     const {
         control,
         handleSubmit,
@@ -14,11 +16,18 @@ const SignupPage = () => {
     } = useForm();
     const [email, setEmail] = useState("");
 
-    const {isLoading, error, isError, mutateAsync, data} = useMutation(signupUser)
+    const {isLoading, error, isError, mutateAsync, data} = useMutation(signupUser, {
+        onSuccess:(data)=>{
+            alert("Registered Successfully!")
+            Navigate("/login")
+        }
+    })
 
-    const onSubmit =async (data) => {
+    const onSubmit = async (data) => {
+        data.image = ""
+        data.email = email.email
         console.log(data)
-        await mutateAsync({name:data.name, email:data.email, phoneNumber:data.phoneNumber, code:data.code})
+        await mutateAsync({name:data.name, email:data.email, phoneNumber:data.phoneNumber, code:data.code, image:data.image})
     }
 
     return(
@@ -28,15 +37,9 @@ const SignupPage = () => {
                     name="name"
                     control={control}
                     label="Name" />
-                <TextFieldComponent
-                    name="email"
-                    control={control}
-                    type="email"
-                    onChange={(e)=>setEmail(e.target.value)}
-                    label="Email" />
-                {
-                    email && <SendCode email={email} />
-                }
+
+                    <SendCode setEmail={setEmail} />
+
                 <TextFieldComponent
                     name="password"
                     control={control}
@@ -60,17 +63,8 @@ const SignupPage = () => {
                 {isError && <Alert icon={false} severity="success">
                     {error.message}
                 </Alert> }
-
             </div>
         </>
     )
 }
 export default SignupPage
-
-
-{/*<form action="" onSubmit={handleSubmit}>*/}
-{/*    <input type="text" placeholder="email" onChange={(e)=> setEmail(e.target.value)}/>*/}
-{/*    <input type="password" placeholder="password" onChange={(e)=> setPassword(e.target.value)}/>*/}
-{/*    <input type="submit"/>*/}
-{/*    {isLoading && <p>Loading</p>}*/}
-{/*</form>*/}

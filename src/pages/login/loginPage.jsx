@@ -5,8 +5,8 @@ import TextFieldComponent from "../../components/inputs/TextFieldComponent.jsx";
 import { useForm} from "react-hook-form";
 import Alert from "@mui/material/Alert";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
 import { actionTypes, useStateValue } from "../../store";
+import {useNavigate} from 'react-router-dom';
 
 const LoginPage = () => {
     const {
@@ -15,15 +15,16 @@ const LoginPage = () => {
         formState: { errors },
     } = useForm();
 
-    const [{ token }, dispatch] = useStateValue();
+    const [, dispatch] = useStateValue();
     const [, setCookie] = useCookies(["jwt"]);
-    const Navigate = useNavigate();
+    const navigate = useNavigate()
 
-    const {isLoading, error, isError, mutateAsync, data} = useMutation(loginUser, {
+    const {isLoading, error, isError, mutateAsync} = useMutation(loginUser, {
         onSuccess:(data)=>{
-            dispatch({ type: actionTypes.SET_TOKEN, value: data.token });
-            setCookie("jwt", data.token);
-            Navigate("/");
+            console.log(data.data.token)
+            dispatch({ type: actionTypes.SET_TOKEN, value: data.data.token });
+            setCookie("jwt", data.data.token);
+            navigate("/");
         }
     })
 
